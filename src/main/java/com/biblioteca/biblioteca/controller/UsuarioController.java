@@ -2,9 +2,11 @@ package com.biblioteca.biblioteca.controller;
 
 import com.biblioteca.biblioteca.model.TokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.biblioteca.biblioteca.model.Usuario;
+import com.biblioteca.biblioteca.model.LoginRequest;
 import com.biblioteca.biblioteca.service.UsuarioService;
 import com.biblioteca.biblioteca.config.JwtUtil;
 
@@ -44,19 +46,31 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String nome, @RequestParam String senha) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
-        if (nome.isEmpty() || senha.isEmpty()) {
-            return ResponseEntity.status(403).body("Nome e Senha não podem ser nulos");
+        System.out.println("Iniciando login");
+
+        if (request.getNome() == null || request.getSenha() == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Nome e senha não podem ser nulos");
         }
-        Optional<Usuario> user = usuarioService.buscarPorNome(nome);
-        System.out.print(user);
 
-        if (user.isPresent() && user.get().getSenha().equals(senha)) {
-            String token = JwtUtil.generateToken(user.get().getNome(), user.get().getTipo_usuario());
+        Optional<Usuario> user = usuarioService.buscarPorNome(request.getNome());
+
+        System.out.println("ROLE DO USUARIO = " + user.get().getTipo_usuario());
+        if (user.isPresent() && user.get().getSenha().equals(request.getSenha())) {
+
+            String token = JwtUtil.generateToken(
+                    user.get().getNome(),
+                    user.get().getTipo_usuario() // administrador, professor, aluno
+            );
+
             return ResponseEntity.ok(new TokenResponse(token));
-        } else {
-            return ResponseEntity.status(401).body("Credenciais inválidas!");
         }
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("Credenciais inválidas");
     }
 }
