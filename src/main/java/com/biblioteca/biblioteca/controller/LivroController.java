@@ -31,7 +31,8 @@ public class LivroController {
     }
 
     @PutMapping("/{id}")
-    public Livro atualizarUsuario(@RequestBody Livro livro) {
+    public Livro atualizarUsuario(@RequestBody Livro livro, @PathVariable long id) {
+        livro.setId(id);
         return livroService.editarLivro(livro);
     }
 

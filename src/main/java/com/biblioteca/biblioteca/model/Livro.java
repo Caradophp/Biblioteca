@@ -2,6 +2,8 @@ package com.biblioteca.biblioteca.model;
 
 import jakarta.persistence.*;
 
+import java.time.Year;
+
 @Entity
 @Table(name="livros")
 public class Livro {
@@ -20,10 +22,10 @@ public class Livro {
     private String genero;
 
     @Column(name = "numero_livro", unique=true, nullable = false)
-    private long numero_livro;
+    private long numeroLivro;
 
     @Column(name = "quantidade_paginas", nullable = false)
-    private int quantidade_paginas;
+    private int quantidadePaginas;
 
     @Column(name = "estado", nullable = false)
     private String estado;
@@ -32,7 +34,10 @@ public class Livro {
     private String status;
 
     @Column(name = "quantidade_livros", nullable = false)
-    private int quantidade_livros;
+    private int quantidadeLivros;
+
+    @Column(name = "ano", nullable = false)
+    private Year ano;
 
     public long getId() {
         return id;
@@ -66,20 +71,20 @@ public class Livro {
         this.genero = genero;
     }
 
-    public long getNumero_livro() {
-        return numero_livro;
+    public long getNumeroLivro() {
+        return numeroLivro;
     }
 
-    public void setNumero_livro(long numero_livro) {
-        this.numero_livro = numero_livro;
+    public void setNumeroLivro(long numeroLivro) {
+        this.numeroLivro = numeroLivro;
     }
 
-    public int getQuantidade_paginas() {
-        return quantidade_paginas;
+    public int getQuantidadePaginas() {
+        return quantidadePaginas;
     }
 
-    public void setQuantidade_paginas(int quantidade_paginas) {
-        this.quantidade_paginas = quantidade_paginas;
+    public void setQuantidadePaginas(int quantidadePaginas) {
+        this.quantidadePaginas = quantidadePaginas;
     }
 
     public String getEstado() {
@@ -98,11 +103,25 @@ public class Livro {
         this.status = status;
     }
 
-    public int getQuantidade_livros() {
-        return quantidade_livros;
+    public int getQuantidadeLivros() {
+        return quantidadeLivros;
     }
 
-    public void setQuantidade_livros(int quantidade_livros) {
-        this.quantidade_livros = quantidade_livros;
+    public void setQuantidadeLivros(int quantidadeLivros) {
+        this.quantidadeLivros = quantidadeLivros;
+    }
+
+    public Year getAno() {
+        return ano;
+    }
+
+    public void setAno(Year ano) {
+        this.ano = ano;
+    }
+
+    @PrePersist
+    private void setAnoPadrao() {
+        this.estado = "novo";
+        this.status = "disponivel";
     }
 }

@@ -1,5 +1,6 @@
 package com.biblioteca.biblioteca.service;
 
+import com.biblioteca.biblioteca.config.EncoderConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.biblioteca.biblioteca.model.Usuario;
@@ -10,6 +11,9 @@ import java.util.Optional;
 
 @Service
 public class UsuarioService {
+
+    @Autowired
+    private EncoderConfig encoderConfig;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -23,6 +27,8 @@ public class UsuarioService {
     }
 
     public Usuario salvarUsuario(Usuario usuario) {
+        String encode = encoderConfig.passwordEncoder().encode(usuario.getSenha());
+        usuario.setSenha(encode);
         return usuarioRepository.save(usuario);
     }
 

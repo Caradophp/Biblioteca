@@ -1,5 +1,6 @@
 package com.biblioteca.biblioteca.controller;
 
+import com.biblioteca.biblioteca.config.EncoderConfig;
 import com.biblioteca.biblioteca.model.TokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private EncoderConfig encoder;
 
     @GetMapping
     public List<Usuario> listarUsuarios() {
@@ -59,7 +63,7 @@ public class UsuarioController {
         Optional<Usuario> user = usuarioService.buscarPorNome(request.getNome());
 
         System.out.println("ROLE DO USUARIO = " + user.get().getTipo_usuario());
-        if (user.isPresent() && user.get().getSenha().equals(request.getSenha())) {
+        if (user.isPresent() && encoder.passwordEncoder().matches(request.getSenha(), user.get().getSenha())) {
 
             String token = JwtUtil.generateToken(
                     user.get().getNome(),
