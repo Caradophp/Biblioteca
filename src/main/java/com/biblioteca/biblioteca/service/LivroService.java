@@ -33,4 +33,8 @@ public class LivroService {
     public void deletarLivro(Long id) {
         livroRepository.deleteById(id);
     }
+
+    public List<Livro> buscar(String param) {
+        return livroRepository.buscarLivros(param);
+    }
 }

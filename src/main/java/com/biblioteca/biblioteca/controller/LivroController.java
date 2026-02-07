@@ -40,4 +40,9 @@ public class LivroController {
     public void deletarLivro(@PathVariable Long id) {
         livroService.deletarLivro(id);
     }
+
+    @GetMapping("/buscar")
+    public List<Livro> buscar(@RequestParam String param) {
+        return livroService.buscar(param);
+    }
 }
