@@ -6,6 +6,6 @@ public record EmprestimoResponse(
         long id,
         String nomeUsuario,
         String tituloLivro,
-        Year ano
+        int ano
 ) {
 }

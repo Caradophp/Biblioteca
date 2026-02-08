@@ -12,9 +12,19 @@ import java.util.List;
 public interface EmprestimoRepository extends CrudRepository<Emprestimo, Long> {
 
     String sql = """
-            SELECT e.id_emprestimo, u.nome, l.titulo, l.ano FROM emprestimos e 
-            INNER JOIN usuarios u ON u.id = e.usuario_id
-            INNER JOIN livros l ON l.id = e.livro_id
+            SELECT 
+                e.id_emprestimo, 
+                u.nome,
+                l.titulo, 
+                l.ano 
+            FROM 
+                emprestimos e 
+            INNER JOIN 
+                usuarios u 
+                    ON u.id = e.usuario_id
+            INNER JOIN 
+                livros l 
+                    ON l.id = e.livro_id
             """;
 
     @Query(value = sql ,nativeQuery = true)

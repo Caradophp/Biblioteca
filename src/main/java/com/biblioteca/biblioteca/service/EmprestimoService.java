@@ -43,4 +43,14 @@ public class EmprestimoService {
         return repository.buscarEmprestimos();
     }
 
+    public boolean deletar(long id) {
+        try {
+            repository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
