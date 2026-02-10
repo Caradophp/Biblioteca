@@ -12,4 +12,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
     @Query(value = "SELECT * FROM usuarios WHERE nome ILIKE %:nome%", nativeQuery = true)
     List<Usuario> buscarUsuario(@Param("nome") String nome);
+
+    Usuario findByEmail(String email);
 }

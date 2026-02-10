@@ -16,6 +16,9 @@ public class Usuario {
     @Column(name = "escola", nullable = false)
     private String escola;
 
+    @Column(name = "email", length = 60)
+    private String email;
+
     @Column(name = "tipo_usuario", nullable = false)
     private String tipo_usuario;
 
@@ -55,6 +58,14 @@ public class Usuario {
 
     public void setEscola(String escola) {
         this.escola = escola;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getNome() {

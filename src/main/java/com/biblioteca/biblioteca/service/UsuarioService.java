@@ -47,5 +47,9 @@ public class UsuarioService {
     public Usuario editarUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
+
+    public Usuario buscarUsuarioPorEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
 }
 
