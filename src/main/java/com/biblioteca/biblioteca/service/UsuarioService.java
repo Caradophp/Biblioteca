@@ -1,6 +1,7 @@
 package com.biblioteca.biblioteca.service;
 
 import com.biblioteca.biblioteca.config.EncoderConfig;
+import com.biblioteca.biblioteca.response.UsuarioResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.biblioteca.biblioteca.model.Usuario;
@@ -50,6 +51,10 @@ public class UsuarioService {
 
     public Usuario buscarUsuarioPorEmail(String email) {
         return usuarioRepository.findByEmail(email);
+    }
+
+    public List<UsuarioResponse> pesquisa(String param) {
+        return usuarioRepository.pesuisa(param);
     }
 }
 

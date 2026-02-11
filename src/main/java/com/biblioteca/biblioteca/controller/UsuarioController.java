@@ -3,6 +3,7 @@ package com.biblioteca.biblioteca.controller;
 import com.biblioteca.biblioteca.config.EncoderConfig;
 import com.biblioteca.biblioteca.model.TokenResponse;
 import com.biblioteca.biblioteca.request.EmailRequest;
+import com.biblioteca.biblioteca.response.UsuarioResponse;
 import com.biblioteca.biblioteca.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -115,5 +116,10 @@ public class UsuarioController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
+    }
+
+    @GetMapping("/buscar")
+    public List<UsuarioResponse> buscar(@RequestParam String param) {
+        return usuarioService.pesquisa(param);
     }
 }
