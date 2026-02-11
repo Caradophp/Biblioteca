@@ -6,12 +6,15 @@ import com.biblioteca.biblioteca.model.Livro;
 import com.biblioteca.biblioteca.model.Usuario;
 import com.biblioteca.biblioteca.repository.EmprestimoRepository;
 import com.biblioteca.biblioteca.response.EmprestimoResponse;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@SuppressWarnings("unchecked")
 public class EmprestimoService {
 
     @Autowired
@@ -22,6 +25,9 @@ public class EmprestimoService {
 
     @Autowired
     private LivroService livroService;
+
+    @PersistenceContext
+    private EntityManager manager;
 
     public Emprestimo salvar(EmprestimoDTO dto) {
 
@@ -51,6 +57,18 @@ public class EmprestimoService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<Emprestimo> pesquisar(String param) {
+        StringBuilder sqlDeBusca = new StringBuilder();
+        sqlDeBusca.append("SELECT * FROM emprestimos e");
+        sqlDeBusca.append("     INNER JOIN usuarios u ON e.usuario_id = u.id");
+        sqlDeBusca.append("     INNER JOIN livros l ON e.livro_id = l.id");
+        sqlDeBusca.append("     WHERE u.nome ILIKE :param or l.titulo ILIKE :param;");
+
+        return (List<Emprestimo>) manager.createNativeQuery(sqlDeBusca.toString(), Emprestimo.class)
+                .setParameter("param", "%" + param + "%")
+                .getResultList();
     }
 
 }
