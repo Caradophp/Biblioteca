@@ -91,7 +91,6 @@ public class UsuarioController {
     @PostMapping("/validar")
     public ResponseEntity<?> isTokenValid(@RequestHeader("Authorization") String authorization) {
         String token = authorization.replace("Bearer ", "");
-        System.out.println(token);
         boolean tokenValid = JwtUtil.isTokenValid(token);
 
         if (tokenValid) {
