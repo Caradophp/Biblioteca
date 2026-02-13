@@ -4,6 +4,7 @@ import com.biblioteca.biblioteca.dto.EmprestimoDTO;
 import com.biblioteca.biblioteca.model.Emprestimo;
 import com.biblioteca.biblioteca.response.EmprestimoResponse;
 import com.biblioteca.biblioteca.service.EmprestimoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class EmprestimoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody EmprestimoDTO dto) {
+    public ResponseEntity<?> salvar(@Valid @RequestBody EmprestimoDTO dto) {
 
         if (dto.idLivro() <= 0 || dto.idUsuario() <= 0) {
             return ResponseEntity.badRequest().body(Map.of("message","Usuário e Livro devem ser informados"));

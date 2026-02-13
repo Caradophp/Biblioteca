@@ -1,6 +1,7 @@
 package com.biblioteca.biblioteca.service;
 
 import com.biblioteca.biblioteca.dto.EmprestimoDTO;
+import com.biblioteca.biblioteca.exception.RegraNegocioException;
 import com.biblioteca.biblioteca.model.Emprestimo;
 import com.biblioteca.biblioteca.model.Livro;
 import com.biblioteca.biblioteca.model.Usuario;
@@ -50,6 +51,11 @@ public class EmprestimoService {
     }
 
     public boolean deletar(long id) {
+
+        if (!repository.existsById(id)) {
+            throw new RegraNegocioException("ID não encontrado");
+        }
+
         try {
             repository.deleteById(id);
             return true;
