@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/emprestimos")
@@ -24,8 +25,18 @@ public class EmprestimoController {
     }
 
     @PostMapping
-    public Emprestimo salvar(@RequestBody EmprestimoDTO dto) {
-       return service.salvar(dto);
+    public ResponseEntity<?> salvar(@RequestBody EmprestimoDTO dto) {
+
+        if (dto.idLivro() <= 0 || dto.idUsuario() <= 0) {
+            return ResponseEntity.badRequest().body(Map.of("message","Usuário e Livro devem ser informados"));
+        }
+
+        Emprestimo salvar = service.salvar(dto);
+
+        if (salvar == null) {
+            ResponseEntity.internalServerError().body(Map.of("message", "Erro interno não esperado. Contate o Suporte técnico"));
+        }
+        return ResponseEntity.ok().body(Map.of("message","Empréstimo registrado com sucesso"));
     }
 
     @DeleteMapping("/{id}")

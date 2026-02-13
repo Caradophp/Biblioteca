@@ -1,16 +1,18 @@
 package com.biblioteca.biblioteca.controller;
 
 import com.biblioteca.biblioteca.config.EncoderConfig;
+import com.biblioteca.biblioteca.dto.UsuarioDTO;
 import com.biblioteca.biblioteca.model.TokenResponse;
 import com.biblioteca.biblioteca.request.EmailRequest;
 import com.biblioteca.biblioteca.response.UsuarioResponse;
 import com.biblioteca.biblioteca.service.EmailService;
 import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import com.biblioteca.biblioteca.model.Usuario;
 import com.biblioteca.biblioteca.model.LoginRequest;
@@ -25,6 +27,7 @@ import java.util.Random;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
+    private static final Log log = LogFactory.getLog(UsuarioController.class);
     @Autowired
     private UsuarioService usuarioService;
 
@@ -45,12 +48,12 @@ public class UsuarioController {
     }
     
     @PostMapping
-    public Usuario adicionarUsuario(@RequestBody Usuario usuario) {
-        return usuarioService.salvarUsuario(usuario);
+    public Usuario adicionarUsuario(@Valid @RequestBody UsuarioDTO dto) {
+        return usuarioService.salvarUsuario(dto);
     }
 
     @PutMapping("/{id}")
-    public Usuario atualizarUsuario(@RequestBody Usuario usuario) {
+    public Usuario atualizarUsuario(@Valid @RequestBody UsuarioDTO usuario) {
         return usuarioService.editarUsuario(usuario);
     }
 
@@ -70,7 +73,6 @@ public class UsuarioController {
 
         Optional<Usuario> user = usuarioService.buscarPorNome(request.getNome());
 
-        System.out.println("ROLE DO USUARIO = " + user.get().getTipo_usuario());
         if (user.isPresent() && encoder.passwordEncoder().matches(request.getSenha(), user.get().getSenha())) {
 
             String token = JwtUtil.generateToken(
@@ -101,20 +103,12 @@ public class UsuarioController {
 
     @PostMapping("/recuperar-senha")
     public ResponseEntity<?> recuperarSenha(@RequestBody EmailRequest email) {
-        Usuario usuario = usuarioService.buscarUsuarioPorEmail(email.email());
-        if (usuario == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("{ \"message\" : \"Usuário com esse e-mail não encontrado\"}");
-        }
-        int codigo = new Random(10000).nextInt();
-        String codigoString = String.valueOf(codigo);
-        codigo = Integer.parseInt(codigoString.replace("-", ""));
         try {
-            emailService.enviarEmailHtml(email.email(), "Recuperação de Senha", "Prezado(a), <strong>" + usuario.getNome() + "</strong>, segue abaixo o código de recuperação de senha, esse é um e-amil automático, portanto não responda.<br><br>Código: " + codigo);
+            usuarioService.enviarEmailRecuperacao(email);
             return ResponseEntity.ok().build();
         } catch (MessagingException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+            log.error("Erro ao enviar E-mail de recuperação: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
