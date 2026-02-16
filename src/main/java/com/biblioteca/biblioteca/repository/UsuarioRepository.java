@@ -15,7 +15,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> buscarUsuario(@Param("nome") String nome);
 
     @Query(value = "SELECT nome, escola, numero_matricula AS matricula FROM usuarios WHERE nome ILIKE %:param% OR escola ILIKE %:param% OR numero_matricula ILIKE %:param%", nativeQuery = true)
-    List<UsuarioResponse> pesuisa(@Param("param") String param);
+    List<UsuarioResponse> pesquisa(@Param("param") String param);
 
     Usuario findByEmail(String email);
 }

@@ -7,8 +7,6 @@ import com.biblioteca.biblioteca.request.EmailRequest;
 import com.biblioteca.biblioteca.response.UsuarioResponse;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.biblioteca.biblioteca.model.Usuario;
 import com.biblioteca.biblioteca.repository.UsuarioRepository;
@@ -96,7 +94,7 @@ public class UsuarioService {
     }
 
     public List<UsuarioResponse> pesquisa(String param) {
-        return usuarioRepository.pesuisa(param);
+        return usuarioRepository.pesquisa(param);
     }
     
     public void enviarEmailRecuperacao(EmailRequest dto) throws MessagingException{
