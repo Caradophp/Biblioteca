@@ -79,6 +79,11 @@ public class EmprestimoController {
         return response;
     }
 
+    @GetMapping("/devolver/{id}")
+    public Emprestimo showDevolver(@PathVariable long id) {
+        return service.carregarDadosDevolucao(id);
+    }
+
     @PatchMapping("/devolver/{id}")
     public void devolverLivro(@PathVariable long id) {
         service.devolverLivro(id);

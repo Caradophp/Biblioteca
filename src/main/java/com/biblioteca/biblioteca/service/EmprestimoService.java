@@ -103,6 +103,15 @@ public class EmprestimoService {
                 .getResultList();
     }
 
+    public Emprestimo carregarDadosDevolucao(long id) {
+
+        if (repository.existsById(id)) {
+            throw new RegraNegocioException("ID não encontrado");
+        }
+
+        return buscarEmprestimoPorId(id);
+    }
+
     @Transactional
     public void devolverLivro(long id) {
         Emprestimo emprestimo = buscarEmprestimoPorId(id);
