@@ -1,8 +1,6 @@
 package com.biblioteca.biblioteca.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="usuarios")
@@ -13,19 +11,15 @@ public class Usuario {
     private long id;
 
     @Column(name = "nome", nullable = false)
-    @NotBlank(message = "Campo não pode ser vazio ou nulo")
     private String nome;
 
     @Column(name = "escola", nullable = false)
     private String escola;
 
     @Column(name = "email", length = 60)
-    @Email(message = "E-mail inválido")
-    @NotBlank(message = "E-mail não pode ser vazio ou nulo")
     private String email;
 
     @Column(name = "tipo_usuario", nullable = false)
-    @NotBlank(message = "Tipo de usuário não pode ser vazio ou nulo")
     private String tipo_usuario;
 
     @Column(name = "numero_matricula", unique=true, nullable = false)

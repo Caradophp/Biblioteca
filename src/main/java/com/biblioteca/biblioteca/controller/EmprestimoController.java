@@ -6,6 +6,7 @@ import com.biblioteca.biblioteca.response.EmprestimoResponse;
 import com.biblioteca.biblioteca.service.EmprestimoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,11 @@ public class EmprestimoController {
         return service.buscarEmprestimos();
     }
 
+    @GetMapping("{id}")
+    public Emprestimo buscarEmprestimoPorId(@PathVariable long id) {
+        return service.buscarEmprestimoPorId(id);
+    }
+
     @PostMapping
     public ResponseEntity<?> salvar(@Valid @RequestBody EmprestimoDTO dto) {
 
@@ -38,6 +44,16 @@ public class EmprestimoController {
             ResponseEntity.internalServerError().body(Map.of("message", "Erro interno não esperado. Contate o Suporte técnico"));
         }
         return ResponseEntity.ok().body(Map.of("message","Empréstimo registrado com sucesso"));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> alterar(@RequestBody EmprestimoDTO dto, @PathVariable long id) {
+        Emprestimo salvar = service.atualizar(dto, id);
+
+        if (salvar == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
@@ -62,4 +78,10 @@ public class EmprestimoController {
 
         return response;
     }
+
+    @PatchMapping("/devolver/{id}")
+    public void devolverLivro(@PathVariable long id) {
+        service.devolverLivro(id);
+    }
+
 }

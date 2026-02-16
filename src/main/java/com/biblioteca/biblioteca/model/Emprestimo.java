@@ -21,6 +21,9 @@ public class Emprestimo {
     @JoinColumn(name = "livro_id", nullable = false)
     private Livro livro;
 
+    @Column(name = "devolvido", columnDefinition = "boolean default false")
+    private boolean devolvido;
+
     private LocalDate dataEmprestimo;
 
     private LocalDate dataDevolucao;
@@ -63,6 +66,14 @@ public class Emprestimo {
 
     public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
+    }
+
+    public boolean isDevolvido() {
+        return devolvido;
+    }
+
+    public void setDevolvido(boolean devolvido) {
+        this.devolvido = devolvido;
     }
 
     @PrePersist
