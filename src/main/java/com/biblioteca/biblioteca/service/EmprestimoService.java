@@ -6,6 +6,7 @@ import com.biblioteca.biblioteca.model.Emprestimo;
 import com.biblioteca.biblioteca.model.Livro;
 import com.biblioteca.biblioteca.model.Usuario;
 import com.biblioteca.biblioteca.repository.EmprestimoRepository;
+import com.biblioteca.biblioteca.repository.MultaRepository;
 import com.biblioteca.biblioteca.response.EmprestimoResponse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -27,6 +30,9 @@ public class EmprestimoService {
 
     @Autowired
     private LivroService livroService;
+
+    @Autowired
+    private MultaRepository multaRepository;
 
     @PersistenceContext
     private EntityManager manager;
@@ -105,7 +111,7 @@ public class EmprestimoService {
 
     public Emprestimo carregarDadosDevolucao(long id) {
 
-        if (repository.existsById(id)) {
+        if (!repository.existsById(id)) {
             throw new RegraNegocioException("ID não encontrado");
         }
 
@@ -114,8 +120,22 @@ public class EmprestimoService {
 
     @Transactional
     public void devolverLivro(long id) {
+
         Emprestimo emprestimo = buscarEmprestimoPorId(id);
+
+        if (ChronoUnit.DAYS.between(emprestimo.getDataDevolucao(), LocalDate.now()) > 0 && !multaRepository.existsByEmprestimo(emprestimo)) {
+            throw new RegraNegocioException("Existe uma multa a ser paga pelo usuário " + emprestimo.getUsuario().getNome());
+        }
+
         emprestimo.setDevolvido(true);
+
+        emprestimo.getLivro().setQuantidadeLivros(emprestimo.getLivro().getQuantidadeLivros() + 1);
+    }
+
+    @Transactional
+    public void marcarNaoDevolvido(long id) {
+        Emprestimo emprestimo = buscarEmprestimoPorId(id);
+        emprestimo.setDevolvido(false);
 
         emprestimo.getLivro().setQuantidadeLivros(emprestimo.getLivro().getQuantidadeLivros() + 1);
     }

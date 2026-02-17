@@ -1,15 +1,20 @@
 package com.biblioteca.biblioteca.controller;
 
+import com.biblioteca.biblioteca.dto.EmprestimoComMultaDTO;
 import com.biblioteca.biblioteca.dto.EmprestimoDTO;
 import com.biblioteca.biblioteca.model.Emprestimo;
+import com.biblioteca.biblioteca.repository.MultaRepository;
 import com.biblioteca.biblioteca.response.EmprestimoResponse;
 import com.biblioteca.biblioteca.service.EmprestimoService;
+import com.biblioteca.biblioteca.utils.Util;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +25,9 @@ public class EmprestimoController {
 
     @Autowired
     private EmprestimoService service;
+
+    @Autowired
+    private MultaRepository multaRepository;
 
     @GetMapping
     public List<EmprestimoResponse> buscarEmprestimos() {
@@ -80,13 +88,37 @@ public class EmprestimoController {
     }
 
     @GetMapping("/devolver/{id}")
-    public Emprestimo showDevolver(@PathVariable long id) {
-        return service.carregarDadosDevolucao(id);
+    public EmprestimoComMultaDTO showDevolver(@PathVariable long id) {
+        Emprestimo emprestimo = service.carregarDadosDevolucao(id);
+
+        EmprestimoComMultaDTO dto = new EmprestimoComMultaDTO();
+        dto.setId(emprestimo.getId());
+        dto.setLivro(emprestimo.getLivro());
+        dto.setUsuario(emprestimo.getUsuario());
+        dto.setDataEmprestimo(emprestimo.getDataEmprestimo());
+        dto.setDataDevolucao(emprestimo.getDataDevolucao());
+        dto.setDevolvido(emprestimo.isDevolvido());
+
+        long between = ChronoUnit.DAYS.between(emprestimo.getDataDevolucao(), LocalDate.now());
+        if (between > 0 && !multaRepository.existsByEmprestimo(emprestimo)) {
+            dto.setMultaValor(between * Util.VALOR_MULTA);
+        } else {
+            dto.setMultaValor(0);
+        }
+
+        return dto;
     }
 
     @PatchMapping("/devolver/{id}")
-    public void devolverLivro(@PathVariable long id) {
+    public ResponseEntity<?> devolverLivro(@PathVariable long id) {
         service.devolverLivro(id);
+        return ResponseEntity.ok(Map.of("aviso", "Devolvido com sucesso"));
+    }
+
+    @PatchMapping("/remarcar/{id}")
+    public ResponseEntity<?> remarcarComoNapDevolvido(@PathVariable long id) {
+        service.marcarNaoDevolvido(id);
+        return ResponseEntity.ok(Map.of("aviso", "O empréstimo está marcado como não devolvido a partir de agora"));
     }
 
 }
