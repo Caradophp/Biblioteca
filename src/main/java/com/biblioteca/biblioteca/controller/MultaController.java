@@ -30,4 +30,15 @@ public class MultaController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/erro/humano")
+    public ResponseEntity<?> erroHumano(@RequestBody MultaDTO multa) {
+        Multa multaRegitrada = service.registraErroHumano(multa);
+
+        if (multaRegitrada == null) {
+            return ResponseEntity.internalServerError().body(Map.of("aviso", "Erro inesperado ao registrar erro humano. Contate o suporte técnico"));
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 }

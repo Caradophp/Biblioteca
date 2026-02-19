@@ -8,6 +8,7 @@ import com.biblioteca.biblioteca.repository.MultaRepository;
 import com.biblioteca.biblioteca.utils.enums.FormaPagamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MultaService {
@@ -36,6 +37,13 @@ public class MultaService {
         }
 
         return repository.save(multa);
+    }
+
+    @Transactional
+    public Multa registraErroHumano(MultaDTO dto) {
+        Multa multa = registrarMulta(dto);
+        multa.setErroHumano(true);
+        return multa;
     }
 
     public boolean isPaid(Emprestimo emprestimo) {

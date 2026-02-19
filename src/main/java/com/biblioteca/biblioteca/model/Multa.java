@@ -21,4 +21,7 @@ public class Multa {
 
     @Enumerated(EnumType.STRING)
     private FormaPagamento formaPagamento;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean erroHumano;
 }
