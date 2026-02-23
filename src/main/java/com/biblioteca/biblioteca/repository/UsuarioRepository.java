@@ -21,4 +21,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<UsuarioResponse> pesquisa(@Param("param") String param);
 
     Usuario findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

@@ -4,6 +4,7 @@ import com.biblioteca.biblioteca.config.EncoderConfig;
 import com.biblioteca.biblioteca.dto.UsuarioDTO;
 import com.biblioteca.biblioteca.model.TokenResponse;
 import com.biblioteca.biblioteca.request.EmailRequest;
+import com.biblioteca.biblioteca.request.RecuperacaoRequest;
 import com.biblioteca.biblioteca.response.UsuarioResponse;
 import com.biblioteca.biblioteca.service.EmailService;
 import jakarta.mail.MessagingException;
@@ -21,7 +22,6 @@ import com.biblioteca.biblioteca.config.JwtUtil;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -114,5 +114,16 @@ public class UsuarioController {
     @GetMapping("/buscar")
     public List<UsuarioResponse> buscar(@RequestParam String param) {
         return usuarioService.pesquisa(param);
+    }
+
+    @PatchMapping("/alterar-senha")
+    public ResponseEntity<?> alterarSenha(@Valid @RequestBody RecuperacaoRequest request) {
+        boolean b = usuarioService.mudarSenha(request);
+
+        if (b) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

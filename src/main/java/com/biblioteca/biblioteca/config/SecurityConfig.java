@@ -25,6 +25,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/usuarios/login").permitAll()
                         .requestMatchers("/usuarios/recuperar-senha").permitAll()
+                        .requestMatchers("/usuarios/alterar-senha").permitAll()
+                        .requestMatchers("/codigo/**").permitAll()
                         .requestMatchers("/email/**").permitAll()
                         .requestMatchers("/usuarios/**").hasRole("administrador")
                         .requestMatchers("/livros/**").hasAnyRole("professor","administrador")
