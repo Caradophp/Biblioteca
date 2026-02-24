@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/usuarios/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/usuarios").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/usuarios/validar").permitAll()
                         .requestMatchers("/usuarios/recuperar-senha").permitAll()
                         .requestMatchers("/usuarios/alterar-senha").permitAll()
                         .requestMatchers("/codigo/**").permitAll()
