@@ -34,6 +34,11 @@ public class EmprestimoController {
         return service.buscarEmprestimos();
     }
 
+    @GetMapping("/usuario")
+    public List<EmprestimoResponse> buscarEmprestimosPorUsuario(@RequestHeader("id_usuario") long idUsuario) {
+        return service.buscarEmprestimosPorUsuario(idUsuario);
+    }
+
     @GetMapping("{id}")
     public Emprestimo buscarEmprestimoPorId(@PathVariable long id) {
         return service.buscarEmprestimoPorId(id);
@@ -119,6 +124,18 @@ public class EmprestimoController {
     public ResponseEntity<?> remarcarComoNapDevolvido(@PathVariable long id) {
         service.marcarNaoDevolvido(id);
         return ResponseEntity.ok(Map.of("aviso", "O empréstimo está marcado como não devolvido a partir de agora"));
+    }
+
+    @PatchMapping("/renovar/{id}")
+    public ResponseEntity<?> renovar(@PathVariable long id) throws Exception {
+        Emprestimo emprestimo = service.renovarEmprestio(id);
+
+        if (emprestimo == null) {
+            throw new Exception("Erro inesperado ao renovar emprestimo");
+        }
+
+        return ResponseEntity.ok(Map.of("aviso", "Renovado com sucesso!"));
+
     }
 
 }

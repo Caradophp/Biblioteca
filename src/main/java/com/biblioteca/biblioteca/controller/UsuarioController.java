@@ -2,7 +2,7 @@ package com.biblioteca.biblioteca.controller;
 
 import com.biblioteca.biblioteca.config.EncoderConfig;
 import com.biblioteca.biblioteca.dto.UsuarioDTO;
-import com.biblioteca.biblioteca.model.TokenResponse;
+import com.biblioteca.biblioteca.response.TokenResponse;
 import com.biblioteca.biblioteca.request.EmailRequest;
 import com.biblioteca.biblioteca.request.RecuperacaoRequest;
 import com.biblioteca.biblioteca.response.UsuarioResponse;
@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.biblioteca.biblioteca.model.Usuario;
-import com.biblioteca.biblioteca.model.LoginRequest;
+import com.biblioteca.biblioteca.request.LoginRequest;
 import com.biblioteca.biblioteca.service.UsuarioService;
 import com.biblioteca.biblioteca.config.JwtUtil;
 
@@ -80,7 +80,7 @@ public class UsuarioController {
                     user.get().getTipo_usuario() // administrador, professor, aluno
             );
 
-            return ResponseEntity.ok(new TokenResponse(token));
+            return ResponseEntity.ok(new TokenResponse(token, String.valueOf(user.get().getId())));
         }
 
         return ResponseEntity

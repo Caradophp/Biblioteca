@@ -5,6 +5,7 @@ import com.biblioteca.biblioteca.model.Usuario;
 import com.biblioteca.biblioteca.response.EmprestimoResponse;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,4 +34,23 @@ public interface EmprestimoRepository extends CrudRepository<Emprestimo, Long> {
     List<EmprestimoResponse> buscarEmprestimos();
 
     Optional<Emprestimo> findByUsuarioAndDevolvidoFalse(Usuario usuario);
+
+    @Query(value = """
+            SELECT 
+                e.id_emprestimo, 
+                u.nome,
+                l.titulo, 
+                l.ano 
+            FROM 
+                emprestimos e 
+            INNER JOIN 
+                usuarios u 
+                    ON u.id = e.usuario_id
+            INNER JOIN 
+                livros l 
+                    ON l.id = e.livro_id
+            WHERE
+                u.id = :id
+            """, nativeQuery = true)
+    List<EmprestimoResponse> buscarEmprestimosPorUsuario(@Param("id") long id);
 }

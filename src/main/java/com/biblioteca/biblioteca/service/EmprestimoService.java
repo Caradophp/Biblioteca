@@ -78,6 +78,10 @@ public class EmprestimoService {
         return repository.buscarEmprestimos();
     }
 
+    public List<EmprestimoResponse> buscarEmprestimosPorUsuario(long id) {
+        return repository.buscarEmprestimosPorUsuario(id);
+    }
+
     public Emprestimo buscarEmprestimoPorId(long id) {
         return repository.findById(id).get();
     }
@@ -138,6 +142,13 @@ public class EmprestimoService {
         emprestimo.setDevolvido(false);
 
         emprestimo.getLivro().setQuantidadeLivros(emprestimo.getLivro().getQuantidadeLivros() + 1);
+    }
+
+    @Transactional
+    public Emprestimo renovarEmprestio(long id) {
+        Emprestimo emprestimo = buscarEmprestimoPorId(id);
+        emprestimo.setDataDevolucao(emprestimo.getDataDevolucao().plusDays(10));
+        return emprestimo;
     }
 
 }
