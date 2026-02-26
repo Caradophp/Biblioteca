@@ -103,9 +103,9 @@ public class EmprestimoService {
 
     public List<Emprestimo> pesquisar(String param) {
         StringBuilder sqlDeBusca = new StringBuilder();
-        sqlDeBusca.append("SELECT * FROM emprestimos e");
-        sqlDeBusca.append("     INNER JOIN usuarios u ON e.usuario_id = u.id");
-        sqlDeBusca.append("     INNER JOIN livros l ON e.livro_id = l.id");
+        sqlDeBusca.append("SELECT * FROM circulacao.emprestimos e");
+        sqlDeBusca.append("     INNER JOIN cadastros.usuarios u ON e.usuario_id = u.id");
+        sqlDeBusca.append("     INNER JOIN arcevo.livros l ON e.livro_id = l.id");
         sqlDeBusca.append("     WHERE u.nome ILIKE :param or l.titulo ILIKE :param;");
 
         return (List<Emprestimo>) manager.createNativeQuery(sqlDeBusca.toString(), Emprestimo.class)

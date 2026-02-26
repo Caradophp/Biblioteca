@@ -43,7 +43,7 @@ public class LivroService {
 
     public List<Livro> buscar(String param) {
         StringBuilder sqlDeBusca = new StringBuilder();
-        sqlDeBusca.append("SELECT * FROM livros");
+        sqlDeBusca.append("SELECT * FROM arcevo.livros");
         sqlDeBusca.append("     WHERE titulo ILIKE :param OR autor ILIKE :param");
         sqlDeBusca.append("     OR status ILIKE :param");
         sqlDeBusca.append("     OR genero ILIKE :param");
