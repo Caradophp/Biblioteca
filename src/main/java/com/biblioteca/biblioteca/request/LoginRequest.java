@@ -1,4 +1,4 @@
-package com.biblioteca.biblioteca.model;
+package com.biblioteca.biblioteca.request;
 
 public class LoginRequest {
     private String nome;
