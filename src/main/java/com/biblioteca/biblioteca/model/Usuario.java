@@ -3,7 +3,7 @@ package com.biblioteca.biblioteca.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="usuarios")
+@Table(name="usuarios", schema = "cadastros")
 public class Usuario {
 
     @Id
@@ -27,6 +27,9 @@ public class Usuario {
 
     @Column(name = "senha", nullable = false)
     private String senha;
+
+    @ManyToOne
+    private Escola escolaEntiy;
 
     public String getSenha() {
         return senha;
@@ -82,5 +85,13 @@ public class Usuario {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Escola getEscolaEntiy() {
+        return escolaEntiy;
+    }
+
+    public void setEscolaEntiy(Escola escolaEntiy) {
+        this.escolaEntiy = escolaEntiy;
     }
 }

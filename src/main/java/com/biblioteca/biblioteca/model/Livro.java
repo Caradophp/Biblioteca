@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.Year;
 
 @Entity
-@Table(name="livros")
+@Table(name="livros", schema = "arcevo")
 public class Livro {
 
     @Id
