@@ -105,7 +105,7 @@ public class EmprestimoController {
         dto.setDevolvido(emprestimo.isDevolvido());
 
         long between = ChronoUnit.DAYS.between(emprestimo.getDataDevolucao(), LocalDate.now());
-        if (between > 0 && !multaRepository.existsByEmprestimo(emprestimo)) {
+        if (between > 0 && !multaRepository.existsByEmprestimo(emprestimo) && !emprestimo.isDevolvido()) {
             dto.setMultaValor(between * Util.VALOR_MULTA);
         } else {
             dto.setMultaValor(0);

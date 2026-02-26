@@ -21,12 +21,12 @@ public interface EmprestimoRepository extends CrudRepository<Emprestimo, Long> {
                 l.titulo, 
                 l.ano 
             FROM 
-                emprestimos e 
+                circulacao.emprestimos e 
             INNER JOIN 
-                usuarios u 
+                cadastros.usuarios u 
                     ON u.id = e.usuario_id
             INNER JOIN 
-                livros l 
+                arcevo.livros l 
                     ON l.id = e.livro_id
             """;
 
@@ -42,12 +42,12 @@ public interface EmprestimoRepository extends CrudRepository<Emprestimo, Long> {
                 l.titulo, 
                 l.ano 
             FROM 
-                emprestimos e 
+                circulacao.emprestimos e 
             INNER JOIN 
-                usuarios u 
+                cadastros.usuarios u 
                     ON u.id = e.usuario_id
             INNER JOIN 
-                livros l 
+                arcevo.livros l 
                     ON l.id = e.livro_id
             WHERE
                 u.id = :id
