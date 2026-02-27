@@ -1,9 +1,11 @@
 package com.biblioteca.biblioteca.dto;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 
 public record LivroDTO(
         @NotBlank(message = "Campo [Autor] deve ser informado")
+        @Max(message = "O nome não pode contar mais de 50 caractéries", value = 50)
         String autor,
 
         @NotBlank(message = "Campo [Estado] deve ser informado")
