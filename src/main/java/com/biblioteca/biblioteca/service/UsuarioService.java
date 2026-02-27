@@ -30,6 +30,9 @@ public class UsuarioService {
 
     @Autowired
     private CodigoRepository codigoRepository;
+
+    @Autowired
+    private EscolaService escolaService;
     
     @Autowired
     private EmailService emailService;
@@ -58,8 +61,9 @@ public class UsuarioService {
         usuario.setNome(dto.nome());
         usuario.setEmail(dto.email());
         usuario.setTipo_usuario(dto.tipoUsuario());
-        usuario.setEscola(dto.escola());
+//        usuario.setEscola(dto.escola());
         usuario.setNumero_matricula(dto.matricula());
+        usuario.setEscolaEntiy(escolaService.buscarEscolaPorId(dto.escolaId()));
         return usuarioRepository.save(usuario);
     }
 
@@ -90,8 +94,9 @@ public class UsuarioService {
         usuario.setNome(dto.nome());
         usuario.setEmail(dto.email());
         usuario.setTipo_usuario(dto.tipoUsuario());
-        usuario.setEscola(dto.escola());
+//        usuario.setEscola(dto.escola());
         usuario.setNumero_matricula(dto.matricula());
+        usuario.setEscolaEntiy(escolaService.buscarEscolaPorId(dto.escolaId()));
 
         return usuarioRepository.save(usuario);
     }

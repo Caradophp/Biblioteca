@@ -18,9 +18,9 @@ public record UsuarioDTO(
         @NotBlank(message = "Tipo de usuário é obrigatório")
         String tipoUsuario,
 
-        @NotBlank(message = "A escola deve ser informada")
-        String escola,
-
         @NotBlank(message = "Numero de matricula deve ser informado")
-        String matricula
+        String matricula,
+
+        @NotBlank(message = "A escola deve ser informada")
+        long escolaId
 ) {}

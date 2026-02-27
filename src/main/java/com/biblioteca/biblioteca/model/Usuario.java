@@ -13,7 +13,7 @@ public class Usuario {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "escola", nullable = false)
+    @Column(name = "escola", nullable = true)
     private String escola;
 
     @Column(name = "email", length = 60)
