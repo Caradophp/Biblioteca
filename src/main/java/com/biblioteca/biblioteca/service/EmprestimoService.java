@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Service
 @SuppressWarnings("unchecked")
@@ -45,6 +46,10 @@ public class EmprestimoService {
 
         Usuario usuario = usuarioService.buscarUsuarioPorId(dto.idUsuario());
         Livro livro = livroService.buscarLivroPorId(dto.idLivro());
+
+        if (livro.getQuantidadeLivros() <= 0) {
+            throw new RegraNegocioException("Livro não disponível para emprestar");
+        }
 
         if (repository.findByUsuarioAndDevolvidoFalse(usuario).isPresent()) {
             throw new RegraNegocioException("Esse usuário já possui um emprestimo ativo. Portanto não pode realizar outro");
@@ -149,6 +154,15 @@ public class EmprestimoService {
         Emprestimo emprestimo = buscarEmprestimoPorId(id);
         emprestimo.setDataDevolucao(emprestimo.getDataDevolucao().plusDays(10));
         return emprestimo;
+    }
+
+    public Emprestimo verificarEmprestimoPendentes(long id) {
+        Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+        return repository.findByUsuario(usuario)
+                .stream()
+                .filter(emprestimo -> !emprestimo.isDevolvido() && ChronoUnit.DAYS.between(emprestimo.getDataDevolucao(), LocalDate.now()) > 0)
+                .toList()
+                .get(0);
     }
 
 }

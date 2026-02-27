@@ -53,4 +53,6 @@ public interface EmprestimoRepository extends CrudRepository<Emprestimo, Long> {
                 u.id = :id
             """, nativeQuery = true)
     List<EmprestimoResponse> buscarEmprestimosPorUsuario(@Param("id") long id);
+
+    List<Emprestimo> findByUsuario(Usuario usuario);
 }
