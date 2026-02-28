@@ -43,6 +43,8 @@ public class MultaService {
     public Multa registraErroHumano(MultaDTO dto) {
         Multa multa = registrarMulta(dto);
         multa.setErroHumano(true);
+        Emprestimo emprestimo = emprestimoService.buscarEmprestimoPorId(dto.idEmprestimo());
+        emprestimo.setDevolvido(true);
         return multa;
     }
 
