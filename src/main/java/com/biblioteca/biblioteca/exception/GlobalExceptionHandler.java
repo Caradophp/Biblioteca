@@ -21,6 +21,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(Map.of("aviso", ex.getMessage()));
     }
 
+    @ExceptionHandler(AvisosException.class)
+    public ResponseEntity<?> handleAvisos(AvisosException ex) {
+        return ResponseEntity.badRequest().body(Map.of("aviso", ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGeral(Exception ex) {
         return ResponseEntity.internalServerError()

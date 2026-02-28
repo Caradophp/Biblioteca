@@ -139,7 +139,7 @@ public class EmprestimoController {
     }
 
     @GetMapping("/verificar/{id}")
-    public Emprestimo verificarEmprestimoPendentes(@PathVariable long id) {
+    public EmprestimoComMultaDTO verificarEmprestimoPendentes(@PathVariable long id) {
         return service.verificarEmprestimoPendentes(id);
     }
 

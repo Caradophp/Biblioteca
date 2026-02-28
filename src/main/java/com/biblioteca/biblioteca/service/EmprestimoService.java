@@ -1,6 +1,8 @@
 package com.biblioteca.biblioteca.service;
 
+import com.biblioteca.biblioteca.dto.EmprestimoComMultaDTO;
 import com.biblioteca.biblioteca.dto.EmprestimoDTO;
+import com.biblioteca.biblioteca.exception.AvisosException;
 import com.biblioteca.biblioteca.exception.RegraNegocioException;
 import com.biblioteca.biblioteca.model.Emprestimo;
 import com.biblioteca.biblioteca.model.Livro;
@@ -8,6 +10,7 @@ import com.biblioteca.biblioteca.model.Usuario;
 import com.biblioteca.biblioteca.repository.EmprestimoRepository;
 import com.biblioteca.biblioteca.repository.MultaRepository;
 import com.biblioteca.biblioteca.response.EmprestimoResponse;
+import com.biblioteca.biblioteca.utils.Util;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 @Service
@@ -156,13 +160,20 @@ public class EmprestimoService {
         return emprestimo;
     }
 
-    public Emprestimo verificarEmprestimoPendentes(long id) {
+    public EmprestimoComMultaDTO verificarEmprestimoPendentes(long id) {
         Usuario usuario = usuarioService.buscarUsuarioPorId(id);
-        return repository.findByUsuario(usuario)
+        Emprestimo e = repository.findByUsuario(usuario)
                 .stream()
-                .filter(emprestimo -> !emprestimo.isDevolvido() && ChronoUnit.DAYS.between(emprestimo.getDataDevolucao(), LocalDate.now()) > 0)
-                .toList()
-                .get(0);
+                .filter(emprestimo -> !emprestimo.isDevolvido() && (ChronoUnit.DAYS.between(emprestimo.getDataDevolucao(), LocalDate.now()) > 0))
+                .findFirst()
+                .orElse(null);
+
+        if (Objects.isNull(e)) {
+            throw new AvisosException("Usuário não possuí pendencias");
+        }
+
+        float valorMulta = ChronoUnit.DAYS.between(e.getDataDevolucao(), LocalDate.now()) * Util.VALOR_MULTA;
+        return new EmprestimoComMultaDTO(e.getId(), e.getUsuario(), e.getLivro(), e.isDevolvido(), valorMulta, e.getDataEmprestimo(), e.getDataDevolucao());
     }
 
 }
