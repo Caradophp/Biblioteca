@@ -2,6 +2,7 @@ package com.biblioteca.biblioteca.controller;
 
 import com.biblioteca.biblioteca.dto.EmprestimoComMultaDTO;
 import com.biblioteca.biblioteca.dto.EmprestimoDTO;
+import com.biblioteca.biblioteca.exception.AvisosException;
 import com.biblioteca.biblioteca.model.Emprestimo;
 import com.biblioteca.biblioteca.repository.MultaRepository;
 import com.biblioteca.biblioteca.response.EmprestimoResponse;
@@ -37,6 +38,33 @@ public class EmprestimoController {
     @GetMapping("/usuario")
     public List<EmprestimoResponse> buscarEmprestimosPorUsuario(@RequestHeader("id_usuario") long idUsuario) {
         return service.buscarEmprestimosPorUsuario(idUsuario);
+    }
+
+    @GetMapping("/usuario/pesquisar")
+    public List<EmprestimoResponse> pesquisarmprestimosPorUsuario(@RequestHeader("id_usuario") long idUsuario, @RequestParam String param) {
+        List<EmprestimoResponse> responses = new ArrayList<>();
+        List<Emprestimo> pesquisar = service.pesquisar(param);
+
+        List<Emprestimo> list = pesquisar.stream()
+                .filter(emprestimo -> emprestimo.getUsuario().getId() == idUsuario)
+                .toList();
+
+        if (list.isEmpty()) {
+            throw new AvisosException("Não foram encontrados resultados para essa pesquisa");
+        }
+
+        list.forEach(e -> {
+            responses.add(
+                    new EmprestimoResponse(
+                            e.getId(),
+                            e.getUsuario().getNome(),
+                            e.getLivro().getTitulo(),
+                            Integer.parseInt(String.valueOf(e.getLivro().getAno()))
+                    )
+            );
+        });
+
+        return responses;
     }
 
     @GetMapping("{id}")
