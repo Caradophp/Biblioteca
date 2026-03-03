@@ -219,7 +219,7 @@ Authorization: Bearer {seu_token}
 
 # 🚀 Tecnologias utilizadas
 
-- Java 17
+- Java 21
 - Spring Boot 3
 - Spring Security
 - JWT
