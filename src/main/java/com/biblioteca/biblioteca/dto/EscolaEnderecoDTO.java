@@ -1,10 +1,13 @@
 package com.biblioteca.biblioteca.dto;
 
-import com.biblioteca.biblioteca.model.Endereco;
-import com.biblioteca.biblioteca.model.Escola;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 public record EscolaEnderecoDTO(
-        Endereco endereco,
-        Escola escola
+        @Valid
+        @NotNull(message = "Endereço deve ser informado")
+        EnderecoDTO endereco,
+        @NotNull(message = "Escola deve ser informada")
+        EscolaDTO escola
 ) {
 }
