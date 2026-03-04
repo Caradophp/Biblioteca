@@ -1,13 +1,16 @@
 package com.biblioteca.biblioteca.controller;
 
+import com.biblioteca.biblioteca.dto.EscolaDTO;
+import com.biblioteca.biblioteca.dto.EscolaEnderecoDTO;
 import com.biblioteca.biblioteca.model.Escola;
 import com.biblioteca.biblioteca.service.EscolaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/escolas")
@@ -18,7 +21,28 @@ public class EscolaController {
 
     @GetMapping
     public List<Escola> listarEscolas() {
-        return service.buscarEscolas();
+        return service.findWithJoin();
     }
 
+    @PostMapping
+    public Escola registrarEscola(@Valid @RequestBody EscolaEnderecoDTO dto) {
+        return service.registrarEscola(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@RequestBody EscolaEnderecoDTO dto, @PathVariable long id) {
+        service.atualizar(dto, id);
+        return ResponseEntity.ok("Atualizado com sucesso");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar(@PathVariable long id) {
+        boolean deletar = service.deletar(id);
+
+        if (deletar) {
+            return ResponseEntity.ok(Map.of("avios", "Deletado com sucesso"));
+        } else {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

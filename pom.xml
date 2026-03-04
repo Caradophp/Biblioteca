@@ -13,6 +13,7 @@
 	<artifactId>biblioteca</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>biblioteca</name>
+	<packaging>jar</packaging>
 	<description>Projeto de Biblioteca com Spring Boot 3</description>
 
 	<properties>
