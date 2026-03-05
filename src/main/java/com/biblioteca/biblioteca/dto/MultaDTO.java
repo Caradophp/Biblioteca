@@ -11,6 +11,8 @@ public record MultaDTO(
         float multaValor,
 
         @NotBlank(message = "Forma de pagamento deve ser irformada")
-        String tipoPagamento
+        String tipoPagamento,
+
+        String comentarios
 ) {
 }

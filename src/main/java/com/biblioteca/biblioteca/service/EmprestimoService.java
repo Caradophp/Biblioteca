@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import static com.biblioteca.biblioteca.utils.Util.isLong;
+
 @Service
 @SuppressWarnings("unchecked")
 public class EmprestimoService {
@@ -115,7 +117,16 @@ public class EmprestimoService {
         sqlDeBusca.append("SELECT * FROM circulacao.emprestimos e");
         sqlDeBusca.append("     INNER JOIN cadastros.usuarios u ON e.usuario_id = u.id");
         sqlDeBusca.append("     INNER JOIN arcevo.livros l ON e.livro_id = l.id");
-        sqlDeBusca.append("     WHERE u.nome ILIKE :param or l.titulo ILIKE :param;");
+        sqlDeBusca.append("     WHERE u.nome ILIKE :param or l.titulo ILIKE :param");
+
+        if (isLong(param)) {
+            sqlDeBusca.append("     OR e.id_emprestimo = CAST(:param AS BIGINT)");
+
+            return (List<Emprestimo>) manager.createNativeQuery(sqlDeBusca.toString(), Emprestimo.class)
+                    .setParameter("param", param)
+                    .getResultList();
+
+        }
 
         return (List<Emprestimo>) manager.createNativeQuery(sqlDeBusca.toString(), Emprestimo.class)
                 .setParameter("param", "%" + param + "%")

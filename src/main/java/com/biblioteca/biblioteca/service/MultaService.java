@@ -23,6 +23,7 @@ public class MultaService {
         Multa multa = new Multa();
         multa.setEmprestimo(emprestimoService.buscarEmprestimoPorId(dto.idEmprestimo()));
         multa.setMultaValor(dto.multaValor());
+        multa.setComentarios(dto.comentarios());
 
         if (dto.tipoPagamento().equals("pix")) {
             multa.setFormaPagamento(FormaPagamento.PIX);
