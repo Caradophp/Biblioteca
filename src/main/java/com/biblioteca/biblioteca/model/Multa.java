@@ -19,6 +19,9 @@ public class Multa {
 
     private float multaValor;
 
+    @Column(columnDefinition = "text default 'Sem comentários'")
+    private String comentarios;
+
     @Enumerated(EnumType.STRING)
     private FormaPagamento formaPagamento;
 
