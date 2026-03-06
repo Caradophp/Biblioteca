@@ -41,7 +41,7 @@ public class EmprestimoController {
     }
 
     @GetMapping("/usuario/pesquisar")
-    public List<EmprestimoResponse> pesquisarmprestimosPorUsuario(@RequestHeader("id_usuario") long idUsuario, @RequestParam String param) {
+    public List<EmprestimoResponse> pesquisarEmprestimosPorUsuario(@RequestHeader("id_usuario") long idUsuario, @RequestParam String param) {
         List<EmprestimoResponse> responses = new ArrayList<>();
         List<Emprestimo> pesquisar = service.pesquisar(param);
 
