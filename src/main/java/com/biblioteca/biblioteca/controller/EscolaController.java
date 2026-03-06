@@ -32,7 +32,7 @@ public class EscolaController {
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@RequestBody EscolaEnderecoDTO dto, @PathVariable long id) {
         service.atualizar(dto, id);
-        return ResponseEntity.ok("Atualizado com sucesso");
+        return ResponseEntity.ok(Map.of("aviso","Atualizado com sucesso"));
     }
 
     @DeleteMapping("/{id}")
@@ -40,7 +40,7 @@ public class EscolaController {
         boolean deletar = service.deletar(id);
 
         if (deletar) {
-            return ResponseEntity.ok(Map.of("avios", "Deletado com sucesso"));
+            return ResponseEntity.ok(Map.of("aviso", "Deletado com sucesso"));
         } else {
             return ResponseEntity.internalServerError().build();
         }

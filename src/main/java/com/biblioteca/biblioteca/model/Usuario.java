@@ -23,7 +23,7 @@ public class Usuario {
     private String tipo_usuario;
 
     @Column(name = "numero_matricula", unique=true, nullable = false)
-    private String numero_matricula;
+    private String numeroMatricula;
 
     @Column(name = "senha", nullable = false)
     private String senha;
@@ -39,12 +39,12 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String getNumero_matricula() {
-        return numero_matricula;
+    public String getNumeroMatricula() {
+        return numeroMatricula;
     }
 
-    public void setNumero_matricula(String numero_matricula) {
-        this.numero_matricula = numero_matricula;
+    public void setNumeroMatricula(String numeroMatricula) {
+        this.numeroMatricula = numeroMatricula;
     }
 
     public String getTipo_usuario() {
