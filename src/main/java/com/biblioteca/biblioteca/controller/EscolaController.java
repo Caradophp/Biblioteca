@@ -24,6 +24,11 @@ public class EscolaController {
         return service.findWithJoin();
     }
 
+    @GetMapping("/busca")
+    public List<Escola> listarEscolas(@RequestParam String param) {
+        return service.pesquisar(param);
+    }
+
     @PostMapping
     public Escola registrarEscola(@Valid @RequestBody EscolaEnderecoDTO dto) {
         return service.registrarEscola(dto);
