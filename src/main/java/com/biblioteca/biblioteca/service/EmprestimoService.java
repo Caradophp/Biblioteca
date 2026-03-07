@@ -11,6 +11,7 @@ import com.biblioteca.biblioteca.repository.EmprestimoRepository;
 import com.biblioteca.biblioteca.repository.MultaRepository;
 import com.biblioteca.biblioteca.response.EmprestimoResponse;
 import com.biblioteca.biblioteca.utils.Util;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class EmprestimoService {
 
     @Autowired
     private LivroService livroService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private MultaRepository multaRepository;
@@ -67,6 +71,13 @@ public class EmprestimoService {
 
         int i = livro.getQuantidadeLivros() - 1;
         livro.setQuantidadeLivros(i);
+
+        try {
+            emailService.enviarEmailHtml(usuario.getEmail().trim(), "Empréstimo Realizado", "Prezado(a) <strong>" + usuario.getNome() + "</strong>, foi registrado um empréstimo do livro <strong>" + livro.getTitulo()  + "</strong> no seu usuário, caso não foi você entre em contato conosco pelo telefone <strong>(27) 98861-0153</strong>");
+        } catch (MessagingException e) {
+            throw new RegraNegocioException(e.getMessage());
+        }
+
         return repository.save(emprestimo);
     }
 
