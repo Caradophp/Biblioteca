@@ -152,7 +152,9 @@ public class NotificacaoPorUsuarioService {
     public boolean deletarTodas(long idUsuario) {
         try {
             for (NotificacaoPorUsuario notificacaoPorUsuario : notificacaoPorUsuarioRepository.findNotificacaoByUsuarioId(idUsuario)) {
-                notificacaoPorUsuario.setIsDeletada(true);
+                if (notificacaoPorUsuario.getIsVizualizada()) {
+                    notificacaoPorUsuario.setIsDeletada(true);
+                }
             }
 
             return true;
