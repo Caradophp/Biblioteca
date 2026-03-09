@@ -26,8 +26,8 @@ public class LivroController {
     }
 
     @PostMapping
-    public Livro adicionarUsuario(@RequestBody Livro livro) {
-        return livroService.salvarLivro(livro);
+    public Livro adicionarLivro(@RequestBody Livro livro, @RequestHeader("id_usuario") long idUsuario) {
+        return livroService.salvarLivro(livro, idUsuario);
     }
 
     @PutMapping("/{id}")

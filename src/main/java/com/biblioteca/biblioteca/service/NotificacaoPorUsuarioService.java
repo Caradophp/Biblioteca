@@ -37,8 +37,9 @@ public class NotificacaoPorUsuarioService {
 
         notificacaoPorUsuario.setNotificacao(save);
 
+        NotificacaoPorUsuario npu = notificacaoPorUsuarioRepository.save(notificacaoPorUsuario);
         notificacaoPorUsuarioRepository.registerNotificationForAllUsers(notificacao.getId());
-        return notificacaoPorUsuarioRepository.save(notificacaoPorUsuario);
+        return npu;
     }
 
     public List<NotificacaoPorUsuarioDTO> findNotificationByUsuario(long idUsuario) {
