@@ -4,6 +4,7 @@ import com.biblioteca.biblioteca.model.Livro;
 import com.biblioteca.biblioteca.model.Usuario;
 import com.biblioteca.biblioteca.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +27,9 @@ public class LivroController {
     }
 
     @PostMapping
-    public Livro adicionarLivro(@RequestBody Livro livro, @RequestHeader("id_usuario") long idUsuario) {
-        return livroService.salvarLivro(livro, idUsuario);
+    public ResponseEntity<Livro> adicionarLivro(@RequestBody Livro livro, @RequestHeader("id_usuario") long idUsuario) {
+        Livro livro1 = livroService.salvarLivro(livro, idUsuario);
+        return ResponseEntity.ok(livro1);
     }
 
     @PutMapping("/{id}")
