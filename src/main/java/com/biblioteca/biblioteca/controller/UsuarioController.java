@@ -76,6 +76,7 @@ public class UsuarioController {
         if (user.isPresent() && encoder.passwordEncoder().matches(request.getSenha(), user.get().getSenha())) {
 
             String token = JwtUtil.generateToken(
+                    user.get().getId(),
                     user.get().getNome(),
                     user.get().getTipo_usuario() // administrador, professor, aluno
             );

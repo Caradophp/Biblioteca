@@ -55,14 +55,17 @@ public class UsuarioService {
             throw new RegraNegocioException("Tipo de usuário informado não é valido");
         }
 
+        if (usuarioRepository.existsByNumeroMatricula(dto.matricula())) {
+            throw new RegraNegocioException("Matricula informada já cadastrada");
+        }
+
         String encode = encoderConfig.passwordEncoder().encode(dto.senha());
         Usuario usuario = new Usuario();
         usuario.setSenha(encode);
         usuario.setNome(dto.nome());
         usuario.setEmail(dto.email());
         usuario.setTipo_usuario(dto.tipoUsuario());
-//        usuario.setEscola(dto.escola());
-        usuario.setNumero_matricula(dto.matricula());
+        usuario.setNumeroMatricula(dto.matricula());
         usuario.setEscolaEntiy(escolaService.buscarEscolaPorId(dto.escolaId()));
         return usuarioRepository.save(usuario);
     }
@@ -95,7 +98,7 @@ public class UsuarioService {
         usuario.setEmail(dto.email());
         usuario.setTipo_usuario(dto.tipoUsuario());
 //        usuario.setEscola(dto.escola());
-        usuario.setNumero_matricula(dto.matricula());
+        usuario.setNumeroMatricula(dto.matricula());
         usuario.setEscolaEntiy(escolaService.buscarEscolaPorId(dto.escolaId()));
 
         return usuarioRepository.save(usuario);

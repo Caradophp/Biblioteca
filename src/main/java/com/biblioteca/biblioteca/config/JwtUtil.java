@@ -17,9 +17,10 @@ public class JwtUtil {
     }
 
     // Método para gerar um token JWT
-    public static String generateToken(String username, String role) {
+    public static String generateToken(long id, String username, String role) {
         return Jwts.builder()
                 .subject(username)
+                .claim("id", id)
                 .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))

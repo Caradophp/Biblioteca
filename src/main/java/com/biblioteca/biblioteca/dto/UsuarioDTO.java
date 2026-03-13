@@ -2,6 +2,7 @@ package com.biblioteca.biblioteca.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record UsuarioDTO(
 
@@ -21,6 +22,6 @@ public record UsuarioDTO(
         @NotBlank(message = "Numero de matricula deve ser informado")
         String matricula,
 
-        @NotBlank(message = "A escola deve ser informada")
+        @NotNull(message = "A escola deve ser informada")
         long escolaId
 ) {}

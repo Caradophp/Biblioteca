@@ -100,15 +100,15 @@ public class EscolaService {
     @SuppressWarnings("unchecked")
     public List<Escola> pesquisar(String param) {
         StringBuilder builder = new StringBuilder();
-        builder.append("SELECT * FROM escolas es");
-        builder.append("    JOIN endereco en");
-        builder.append("    ON es.id_endereco = en.id");
+        builder.append("SELECT * FROM cadastros.escolas es");
+        builder.append("    JOIN cadastros.enderecos en");
+        builder.append("    ON es.endereco_id = en.id");
         builder.append("    WHERE es.nome ILIKE :param OR");
         builder.append("    en.estado ILIKE :param OR");
         builder.append("    en.municipio ILIKE :param");
 
         return (List<Escola>) manager.createNativeQuery(builder.toString(), Escola.class)
-                .setParameter("param", param)
+                .setParameter("param", "%" + param + "%")
                 .getResultList();
     }
 }
