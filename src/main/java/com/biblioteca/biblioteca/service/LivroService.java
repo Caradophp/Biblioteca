@@ -74,4 +74,10 @@ public class LivroService {
                 .setParameter("param", "%" + param + "%")
                 .getResultList();
     }
+
+    public List<Livro> listarLivrosLimite6() {
+        return listarLivros().stream()
+                .limit(6)
+                .toList();
+    }
 }

@@ -29,6 +29,7 @@ public class Usuario {
     private String senha;
 
     @ManyToOne
+    @JoinColumn(name = "id_escola")
     private Escola escolaEntiy;
 
     public String getSenha() {
